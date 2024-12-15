@@ -1,0 +1,20 @@
+# docker/Dockerfile.dev.freebsd
+FROM freebsd:14.2-RELEASE
+
+# Install required packages
+RUN pkg install -y \
+    bash \
+    curl \
+    git \
+    docker \
+    kubectl \
+    sudo
+
+# Note: Kustomize might need to be built from source for FreeBSD
+# This would require go to be installed first
+RUN pkg install -y go && \
+    go install sigs.k8s.io/kustomize/kustomize/v5@latest
+
+WORKDIR /workspace
+
+CMD ["/bin/bash"]

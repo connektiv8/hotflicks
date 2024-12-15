@@ -1,0 +1,58 @@
+flowchart TB
+    subgraph SearchInfra["Search Infrastructure"]
+        direction TB
+        
+        subgraph MeiliSearch["MeiliSearch Cluster"]
+            meili1["Primary Node"]
+            meili2["Replica Node 1"]
+            meili3["Replica Node 2"]
+            
+            meili1 --> meili2
+            meili1 --> meili3
+        end
+        
+        subgraph SearchServices["Search Services"]
+            indexer["Indexer Service"]
+            searchAPI["Search API"]
+            analyzer["Text Analyzer"]
+        end
+    end
+
+    subgraph CacheLayer["Caching Infrastructure"]
+        direction TB
+        
+        subgraph RedisCluster["Redis Cluster"]
+            redisMaster["Master"]
+            redisSlave1["Slave 1"]
+            redisSlave2["Slave 2"]
+            
+            redisMaster --> redisSlave1
+            redisMaster --> redisSlave2
+        end
+        
+        subgraph CacheUpdater["Cache Update Service"]
+            changeDetector["Change Detector"]
+            syncService["Sync Service"]
+            invalidator["Cache Invalidator"]
+        end
+    end
+
+    subgraph DataSource["PostgreSQL Source"]
+        direction TB
+        
+        pgMaster[(Master DB)]
+        pgReplica1[(Replica 1)]
+        pgReplica2[(Replica 2)]
+        
+        pgMaster --> pgReplica1
+        pgMaster --> pgReplica2
+    end
+
+    DataSource --> SearchInfra
+    DataSource --> CacheLayer
+    SearchInfra --> CacheLayer
+    
+    style SearchInfra fill:#f9f,stroke:#333,stroke-width:2px
+    style CacheLayer fill:#9ff,stroke:#333,stroke-width:2px
+    style DataSource fill:#ff9,stroke:#333,stroke-width:2px
+    

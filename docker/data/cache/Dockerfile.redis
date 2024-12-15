@@ -1,0 +1,12 @@
+# docker/cache/Dockerfile.redis
+FROM alpine:3.21
+
+RUN apk add --no-cache \
+    redis \
+    bash
+
+COPY cache/configs/redis.conf /etc/redis/redis.conf
+
+EXPOSE 6379
+
+CMD ["redis-server", "/etc/redis/redis.conf"]

@@ -1,0 +1,50 @@
+---
+/automation/base/core/namespaces/namespaces.yaml
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hotflicks-core
+  labels:
+    name: hotflicks-core
+    istio-injection: enabled
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hotflicks-monitoring
+  labels:
+    name: hotflicks-monitoring
+    istio-injection: enabled
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hotflicks-data
+  labels:
+    name: hotflicks-data
+    istio-injection: enabled
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hotflicks-apps
+  labels:
+    name: hotflicks-apps
+    istio-injection: enabled
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hotflicks-frontend
+  labels:
+    name: hotflicks-frontend
+    istio-injection: enabled
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hotflicks-search
+  labels:
+    name: hotflicks-search
+    istio-injection: enabled

@@ -1,0 +1,63 @@
+flowchart TB
+    subgraph ServiceDiscovery["Service Discovery (Consul)"]
+        direction TB
+        
+        subgraph ConsulCluster["Consul Server Cluster"]
+            consul1["Consul Server 1"]
+            consul2["Consul Server 2"]
+            consul3["Consul Server 3"]
+            
+            consul1 <--> consul2
+            consul2 <--> consul3
+            consul3 <--> consul1
+        end
+        
+        subgraph ConsulAgents["Consul Agents"]
+            agent1["Agent - Streaming"]
+            agent2["Agent - Recommendation"]
+            agent3["Agent - Data Pipeline"]
+            
+            ConsulCluster --> agent1
+            ConsulCluster --> agent2
+            ConsulCluster --> agent3
+        end
+
+        subgraph ServiceRegistry["Service Registry"]
+            healthCheck["Health Checker"]
+            dnsInterface["DNS Interface"]
+            kvStore["KV Store"]
+        end
+    end
+
+    subgraph SecurityInfra["Security Infrastructure (Vault)"]
+        direction TB
+        
+        subgraph VaultCluster["Vault HA Cluster"]
+            vault1["Vault Server 1"]
+            vault2["Vault Server 2"]
+            vault3["Vault Server 3"]
+            
+            vault1 <--> vault2
+            vault2 <--> vault3
+            vault3 <--> vault1
+        end
+        
+        subgraph SecretEngines["Secret Engines"]
+            kv["KV Store"]
+            pki["PKI"]
+            transit["Transit"]
+            db["Database"]
+        end
+        
+        subgraph AuthMethods["Auth Methods"]
+            k8sAuth["Kubernetes Auth"]
+            tokenAuth["Token Auth"]
+            ldapAuth["LDAP"]
+        end
+    end
+
+    ConsulCluster --> VaultCluster
+    
+    style ServiceDiscovery fill:#f96,stroke:#333,stroke-width:2px
+    style SecurityInfra fill:#69f,stroke:#333,stroke-width:2px
+    

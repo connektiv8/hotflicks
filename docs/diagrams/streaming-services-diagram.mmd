@@ -1,0 +1,46 @@
+flowchart TB
+    subgraph StreamingServices["Streaming Services (FreeBSD)"]
+        direction TB
+        
+        subgraph EdgeServer["Edge Streaming Server"]
+            nginx["NGINX Server"]
+            caching["Caching Layer"]
+            monitoring["Monitoring Agent"]
+            loadBalancer["Load Balancer"]
+            
+            nginx --> caching
+            caching --> loadBalancer
+            monitoring --> nginx
+        end
+
+        subgraph Transcoder["Video Transcoder"]
+            ffmpeg["FFmpeg Engine"]
+            queueManager["Queue Manager"]
+            formatDetector["Format Detector"]
+            qualityAnalyzer["Quality Analyzer"]
+            
+            formatDetector --> ffmpeg
+            ffmpeg --> qualityAnalyzer
+            queueManager --> ffmpeg
+        end
+
+        subgraph StreamManagement["Stream Management"]
+            sessionManager["Session Manager"]
+            streamMonitor["Stream Monitor"]
+            bufferManager["Buffer Manager"]
+            
+            sessionManager --> streamMonitor
+            streamMonitor --> bufferManager
+        end
+
+        EdgeServer --> StreamManagement
+        Transcoder --> EdgeServer
+    end
+
+    CDN{"Content Delivery Network"} --> EdgeServer
+
+    style StreamingServices fill:#bbf,stroke:#333,stroke-width:2px
+    style EdgeServer fill:#ddf,stroke:#333,stroke-width:2px
+    style Transcoder fill:#ddf,stroke:#333,stroke-width:2px
+    style StreamManagement fill:#ddf,stroke:#333,stroke-width:2px
+    

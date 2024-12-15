@@ -1,0 +1,63 @@
+flowchart TB
+    subgraph MonitoringStack["Monitoring Infrastructure"]
+        direction TB
+        
+        subgraph Prometheus["Prometheus Stack"]
+            promServer["Prometheus Server"]
+            alertManager["Alert Manager"]
+            pushGateway["Push Gateway"]
+            
+            subgraph ServiceMonitors["Service Monitors"]
+                nodeExporter["Node Exporter"]
+                cadvisor["cAdvisor"]
+                customExporters["Custom Exporters"]
+            end
+        end
+        
+        subgraph Grafana["Grafana Visualization"]
+            dashboards["Dashboards"]
+            alerting["Alerting"]
+            dataSources["Data Sources"]
+        end
+    end
+
+    subgraph LoggingStack["Logging Infrastructure"]
+        direction TB
+        
+        subgraph LogCollection["Log Collection"]
+            fluentBit["Fluent Bit"]
+            logShipper["Log Shipper"]
+        end
+        
+        subgraph LogStorage["Log Storage"]
+            elasticsearch["Elasticsearch"]
+            retention["Retention Policies"]
+        end
+        
+        subgraph LogAnalysis["Log Analysis"]
+            kibana["Kibana"]
+            logProcessor["Log Processor"]
+            auditTrail["Audit Trail"]
+        end
+    end
+
+    subgraph AlertingSystem["Alerting System"]
+        direction TB
+        
+        alertRules["Alert Rules"]
+        notifier["Notifier"]
+        escalation["Escalation Manager"]
+        oncall["On-call Rotation"]
+    end
+
+    ServiceMonitors --> promServer
+    promServer --> alertManager
+    promServer --> Grafana
+    LogCollection --> LogStorage
+    LogStorage --> LogAnalysis
+    alertManager --> AlertingSystem
+    
+    style MonitoringStack fill:#9cf,stroke:#333,stroke-width:2px
+    style LoggingStack fill:#fc9,stroke:#333,stroke-width:2px
+    style AlertingSystem fill:#f99,stroke:#333,stroke-width:2px
+    

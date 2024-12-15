@@ -1,0 +1,49 @@
+flowchart LR
+    subgraph User["User Interface"]
+        WebApp["Web Application - (React)"]
+    end
+
+    subgraph RecommendationEngine["Recommendation Pipeline"]
+        direction TB
+        Retrieval["Retrieval Service (Alpine)"]
+        Ranking["Ranking Service (Alpine)"]
+        ReRanking["Re-ranking Service (Alpine)"]
+        MLModel["ML Model (Recommendation Engine)"]
+        Retrieval --> Ranking
+        Ranking --> ReRanking
+        MLModel <--> Ranking
+    end
+
+    subgraph StreamingService["Streaming Services (FreeBSD)"]
+        EdgeServer["Edge Streaming Server"]
+        Transcoder["Video Transcoder"]
+    end
+
+    subgraph DataPipeline["Data Processing Pipeline"]
+        direction TB
+        DataStore[(Data Store - PostgreSQL)]
+        FeatureStore[(Feature Store - Redis)]
+        OnlineCompute["Online Feature - Computation"]
+        BatchCompute["Batch Feature - Computation"]
+        DataStore --> OnlineCompute
+        DataStore --> BatchCompute
+        OnlineCompute --> FeatureStore
+        BatchCompute --> FeatureStore
+    end
+
+    subgraph ContentDelivery["Content Delivery"]
+        VideoContent{"Video Content - CDN"}
+    end
+
+    User --> Retrieval
+    ReRanking --> WebApp
+    StreamingService --> WebApp
+    FeatureStore --> Ranking
+    VideoContent --> EdgeServer
+    
+    ActivityStream[["User Activity - Stream"]] --> DataStore
+
+    style RecommendationEngine fill:#f9f,stroke:#333,stroke-width:2px
+    style StreamingService fill:#bbf,stroke:#333,stroke-width:2px
+    style DataPipeline fill:#bfb,stroke:#333,stroke-width:2px
+    style User fill:#fbb,stroke:#333,stroke-width:2px   

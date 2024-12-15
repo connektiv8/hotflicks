@@ -1,0 +1,55 @@
+flowchart TB
+    subgraph RecommendationPipeline["Recommendation Pipeline (Alpine)"]
+        direction TB
+        
+        subgraph MLModel["ML Model Service"]
+            modelServer["Model Server"]
+            modelMonitor["Model Monitor"]
+            featureProcessor["Feature Processor"]
+            inferenceEngine["Inference Engine"]
+            
+            featureProcessor --> modelServer
+            modelServer --> inferenceEngine
+            modelMonitor --> modelServer
+        end
+
+        subgraph RetrievalService["Retrieval Service"]
+            contentIndex["Content Index"]
+            similarityEngine["Similarity Engine"]
+            filterEngine["Filter Engine"]
+            cacheLayer["Cache Layer"]
+            
+            contentIndex --> similarityEngine
+            similarityEngine --> filterEngine
+            filterEngine --> cacheLayer
+        end
+
+        subgraph RankingService["Ranking Services"]
+            direction TB
+            
+            subgraph MainRanking["Ranking Service"]
+                rankingModel["Ranking Model"]
+                scoreAggregator["Score Aggregator"]
+                contextAnalyzer["Context Analyzer"]
+            end
+            
+            subgraph ReRanking["Re-Ranking Service"]
+                diversityEngine["Diversity Engine"]
+                freshnessScore["Freshness Score"]
+                popularityBoost["Popularity Boost"]
+            end
+            
+            MainRanking --> ReRanking
+        end
+
+        RetrievalService --> RankingService
+        MLModel --> RankingService
+    end
+
+    FeatureStore[(Feature Store)] --> MLModel
+    FeatureStore --> RankingService
+
+    style RecommendationPipeline fill:#f9f,stroke:#333,stroke-width:2px
+    style MLModel fill:#fdf,stroke:#333,stroke-width:2px
+    style RetrievalService fill:#fdf,stroke:#333,stroke-width:2px
+    style RankingService fill:#fdf,stroke:#333,stroke-width:2px

@@ -1,0 +1,49 @@
+flowchart TB
+    subgraph DataPipeline["Data Processing Pipeline"]
+        direction TB
+        
+        subgraph DataStore["PostgreSQL Cluster"]
+            primary[(Primary DB)]
+            replica1[(Replica 1)]
+            replica2[(Replica 2)]
+            
+            primary --> replica1
+            primary --> replica2
+        end
+
+        subgraph FeatureProcessing["Feature Processing"]
+            subgraph BatchFeatures["Batch Feature Computation"]
+                featureExtractor["Feature Extractor"]
+                aggregator["Data Aggregator"]
+                transformer["Feature Transformer"]
+            end
+            
+            subgraph OnlineFeatures["Online Feature Computation"]
+                streamProcessor["Stream Processor"]
+                realTimeAggregator["Real-time Aggregator"]
+                featureService["Feature Service"]
+            end
+        end
+
+        subgraph FeatureStore["Redis Cluster"]
+            masterCache[(Master Cache)]
+            slaveCache1[(Slave Cache 1)]
+            slaveCache2[(Slave Cache 2)]
+            
+            masterCache --> slaveCache1
+            masterCache --> slaveCache2
+        end
+
+        DataStore --> BatchFeatures
+        DataStore --> OnlineFeatures
+        BatchFeatures --> FeatureStore
+        OnlineFeatures --> FeatureStore
+    end
+
+    UserActivity[["User Activity Stream"]] --> DataStore
+    FeatureStore --> RecommendationEngine["To Recommendation Engine"]
+
+    style DataPipeline fill:#bfb,stroke:#333,stroke-width:2px
+    style DataStore fill:#dfd,stroke:#333,stroke-width:2px
+    style FeatureProcessing fill:#dfd,stroke:#333,stroke-width:2px
+    style FeatureStore fill:#dfd,stroke:#333,stroke-width:2px

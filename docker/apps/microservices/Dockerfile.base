@@ -1,0 +1,14 @@
+# docker/microservices/Dockerfile.base
+FROM alpine:3.21
+
+# Common microservice dependencies
+RUN apk add --no-cache \
+    python3 \
+    py3-pip \
+    nodejs \
+    npm \
+    openssl \
+    curl \
+    bash
+
+WORKDIR /app
