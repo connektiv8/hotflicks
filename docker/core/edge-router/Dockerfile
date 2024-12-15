@@ -1,29 +1,5 @@
 # docker/core/edge-router/Dockerfile
 
-# This Dockerfile is used to build the Edge Router image for the HotFlicks Platform
-# The Edge Router is responsible for routing incoming requests to the appropriate services
-# It also handles load balancing and SSL termination for the services
-# The Edge Router uses Traefik as the reverse proxy and load balancer
-# The Traefik configuration is stored in the /etc/traefik directory
-# The Traefik logs are stored in the /logs directory
-# The Traefik ACME certificates are stored in the /etc/traefik/acme directory
-# The Edge Router exposes ports 80, 443, and 8082 for HTTP, HTTPS, and metrics respectively
-# The Edge Router requires the /etc/traefik/acme and /logs directories to be mounted as volumes
-# The Edge Router runs as the nobody user for security reasons
-
-
-# Author: HotFlicks Platform Team
-# Description: Edge routing and load balancing service
-# Version: 1.0
-# Organization: HotFlicks Platform
-# Base Image: alpine:3.21
-# Documentation: https://docs.hotflicks.local/edge-router
-# Maintainer: HotFlicks Platform Team
-# Exposed Ports: 80, 443, 8082
-# Volumes: /etc/traefik/acme, /logs
-
-
-# Use Alpine as base image for minimal footprint
 FROM alpine:3.21
 
 # Add labels for our organization and service metadata
