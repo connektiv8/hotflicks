@@ -17,8 +17,8 @@ COPY --from=builder /wheels /wheels
 COPY --from=builder /app/requirements.txt .
 RUN pip install --no-cache /wheels/*
 
-COPY ml/model-trainer/src ./src
-COPY ml/model-trainer/models ./models
-COPY cache/conf/model-trainer.conf ./conf/
+COPY docker/machine-learning/model-trainer/src ./src
+COPY docker/machine-learning/model-trainer/models ./models
+COPY docker/machine-learning/cache/conf/model-trainer.conf ./conf/
 
 CMD ["python", "src/train.py"]
