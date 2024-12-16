@@ -7,18 +7,18 @@ RUN apk add --no-cache \
     python3-dev
 
 WORKDIR /app
-COPY ml/model-trainer/requirements.txt .
+COPY conf/requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /wheels -r requirements.txt
 
-FROM python:3.11-alpine
+FROM python:3.12-alpine
 
 WORKDIR /app
 COPY --from=builder /wheels /wheels
 COPY --from=builder /app/requirements.txt .
 RUN pip install --no-cache /wheels/*
 
-COPY docker/machine-learning/model-trainer/src ./src
-COPY docker/machine-learning/model-trainer/models ./models
-COPY docker/machine-learning/cache/conf/model-trainer.conf ./conf/
+COPY src ./src
+COPY models ./models
+COPY conf/model-trainer.conf ./conf/
 
 CMD ["python", "src/train.py"]

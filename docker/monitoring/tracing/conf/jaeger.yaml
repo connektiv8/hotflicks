@@ -1,0 +1,24 @@
+# docker/core/monitoring/tracing/conf/jaeger.yaml
+
+storage:
+  type: elasticsearch
+  options:
+    es:
+      server-urls: http://elasticsearch:9200
+      username: ${ES_USERNAME}
+      password: ${ES_PASSWORD}
+      index-prefix: jaeger
+
+sampling:
+  strategies:
+    - service: hotflicks-api
+      type: probabilistic
+      param: 1.0
+    - service: streaming-edge
+      type: probabilistic
+      param: 0.5
+
+agent:
+  tags:
+    environment: ${ENVIRONMENT}
+    deployment: hotflicks
